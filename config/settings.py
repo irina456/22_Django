@@ -3,6 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv  # type: ignore
 
+from blog.apps import BlogProjectName
 from catalog.apps import CatalogProjectConfig
 
 load_dotenv()
@@ -20,7 +21,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "192.168.1.2", "192.168.0.114"]
 
 
 # Application definition
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     f"{CatalogProjectConfig.name}",
+    f"{BlogProjectName.name}",
 ]
 
 MIDDLEWARE = [
