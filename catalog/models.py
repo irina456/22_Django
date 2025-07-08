@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Category(models.Model):
     name = models.CharField(
         max_length=100,
@@ -26,7 +25,6 @@ class Product(models.Model):
         verbose_name="Модель",
         help_text="Укажите модель",
     )
-
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -43,14 +41,11 @@ class Product(models.Model):
         verbose_name="Фото",
         help_text="Загрузите фото",
     )
-    date = models.DateField(
-        verbose_name="Дата выпуска",
-        help_text="Укажите дату выпуска",
-        blank=True,
-        null=True,
-    )
     price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="Стоимость"
+    )
+    discount = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0, verbose_name="Скидка (%)"
     )
     created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
     updated_at = models.DateField(
@@ -64,3 +59,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_discounted_price(self):
+        if self.discount:
+            return self.price - (self.price * self.discount / 100)
+        return self.price
+
+    def get_full_description(self):
+        return f"{self.name} - {self.category.name}: {self.description}" if hasattr(self, 'description') else self.name
