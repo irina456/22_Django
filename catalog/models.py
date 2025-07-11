@@ -1,32 +1,63 @@
 from django.db import models
 
-
-class Student(models.Model):
-    FIRST_YEAR = "first"
-    SECOND_YEAR = "second"
-    THIRD_YEAR = "third"
-    FOURTH_YEAR = "fourth"
-
-    YEAR_IN_SCHOOL_CHOICES = [
-        (FIRST_YEAR, "Первый курс"),
-        (SECOND_YEAR, "Второй курс"),
-        (THIRD_YEAR, "Третий курс"),
-        (FOURTH_YEAR, "Четвертый курс"),
-    ]
-
-    first_name = models.CharField(max_length=150, verbose_name="Имя")
-    last_name = models.CharField(max_length=150, verbose_name="Фамилия")
-    year = models.CharField(
-        max_length=10,
-        choices=YEAR_IN_SCHOOL_CHOICES,
-        default=FIRST_YEAR,
-        verbose_name="Курс",
+class Category(models.Model):
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Наименование",
+        help_text="Укажите наименование",
+    )
+    description = models.TextField(
+        verbose_name="Описание",
+        help_text="Описание",
     )
 
-    def __str__(self) -> str:
-        return f"{self.name} {self.last_name}"
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Наименование",
+        help_text="Укажите модель",
+    )
+    description = models.TextField(
+        verbose_name="Описание",
+        help_text="Описание",
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        verbose_name="Категория",
+        help_text="Категория",
+        related_name="products",
+    )
+    foto = models.ImageField(
+        upload_to="catalog/foto",
+        blank=True,
+        null=True,
+        verbose_name="Фото",
+        help_text="Загрузите фото",
+    )
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name="Стоимость"
+    )
+    created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
+    updated_at = models.DateField(
+        verbose_name="Дата последнего изменения", auto_now=True
+    )
 
     class Meta:
-        verbose_name = "студент"
-        verbose_name_plural = "студенты"
-        ordering = ["last_name"]
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+        ordering = ["category", "name"]
+
+    def __str__(self):
+        return self.name
+
+    def get_full_description(self):
+        return f"{self.name} - {self.category.name}: {self.description}" if hasattr(self, 'description') else self.name
