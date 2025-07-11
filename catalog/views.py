@@ -1,15 +1,10 @@
-import logging
-
-from catalog.apps import CatalogProjectConfig
-
-
 from django.http import HttpResponse
 from django.shortcuts import render
 
 
 # Create your views here.
 def home(request):
-    return render(request, f"{CatalogProjectConfig.name}/home.html")
+    return render(request, f"catalog/home.html")
 
 
 def contacts(request):
@@ -18,5 +13,5 @@ def contacts(request):
         phone = request.POST.get("phone")
         message = request.POST.get("message")
 
-        return render(request, f"{CatalogProjectConfig.name}/response.html")
-    return render(request, f"{CatalogProjectConfig.name}/contacts.html")
+        return render(request, f"catalog/response.html")
+    return render(request, f"catalog/contacts.html")
