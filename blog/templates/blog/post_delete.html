@@ -3,18 +3,17 @@
 {% block content %}
 <div class="alert alert-danger" role="alert">
     <h3>Вы действительно хотите удалить этот пост?</h3>
+    <img height="250px" src="{% if object.preview %}{{ object.preview.url }}{% else %}/media/images/noimage.png{% endif %}" alt="No image">
+    <h1>{{ object.title }}</h1>
+    <p>{{ object.content }}</p>
+    <p>{{ object.created_at }}</p>
+    <p>Просмотры: {{ object.views }}</p>
     <form method="post">
-        {% csrf_token%}
-    <div class="d-grid gap-2 d-md-block">
-        <button class="btn btn-primary" type="submit">Удалить</button>
-        <a href="{% url 'blogs:posts' %}" class="btn btn-primary" type="button">Отмена</a>
-    </div>
+        {% csrf_token %}
+        <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-primary" type="submit">Удалить</button>
+            <a href="{% url 'blogs:posts' %}" class="btn btn-primary">Отмена</a>
+        </div>
     </form>
-    <img height="250px" src="{% if post.preview %}{{ post.preview.url }}{% else %}/media/images/noimage.png{% endif %}" alt="No image">
-    <br>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p>{{ post.created_at }}</p>
-    <p>Просмотры: {{ post.views }}</p>
 </div>
 {% endblock %}
