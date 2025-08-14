@@ -1,0 +1,12 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Редактирование товара товара{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token%}
+    {{ form.as_p }}
+    <div class="d-grid gap-2 d-md-block">
+        <button class="btn btn-success" type="submit">Cохранить</button>
+        <a href="{% url 'catalog:index' %}" class="btn btn-danger" type="button">Отмена</a>
+    </div>
+</form>
+{% endblock %}

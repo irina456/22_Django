@@ -1,63 +1,47 @@
 from django.db import models
 
 class Category(models.Model):
-    name = models.CharField(
-        max_length=100,
-        verbose_name="Наименование",
-        help_text="Укажите наименование",
-    )
-    description = models.TextField(
-        verbose_name="Описание",
-        help_text="Описание",
-    )
-
-    class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+    name = models.CharField(max_length=50, verbose_name='Наименование')
+    description = models.TextField(verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+        ordering = ['name']
 
 class Product(models.Model):
-    name = models.CharField(
-        max_length=100,
-        verbose_name="Наименование",
-        help_text="Укажите модель",
-    )
-    description = models.TextField(
-        verbose_name="Описание",
-        help_text="Описание",
-    )
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,
-        verbose_name="Категория",
-        help_text="Категория",
-        related_name="products",
-    )
-    foto = models.ImageField(
-        upload_to="catalog/foto",
-        blank=True,
-        null=True,
-        verbose_name="Фото",
-        help_text="Загрузите фото",
-    )
-    price = models.DecimalField(
-        max_digits=10, decimal_places=2, verbose_name="Стоимость"
-    )
-    created_at = models.DateField(verbose_name="Дата создания", auto_now_add=True)
-    updated_at = models.DateField(
-        verbose_name="Дата последнего изменения", auto_now=True
-    )
-
-    class Meta:
-        verbose_name = "Продукт"
-        verbose_name_plural = "Продукты"
-        ordering = ["category", "name"]
+    name = models.CharField(max_length=150, verbose_name='Наименование')
+    description = models.TextField(verbose_name='Описание')
+    image = models.ImageField(upload_to='images/', verbose_name='Изображение')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    boolean_value = models.BooleanField(default=False, verbose_name='Булево поле (просто для проверки стилизации)')
 
     def __str__(self):
-        return self.name
+        return f'{self.name} {self.category} {self.price}'
 
-    def get_full_description(self):
-        return f"{self.name} - {self.category.name}: {self.description}" if hasattr(self, 'description') else self.name
+    class Meta:
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+        ordering = ['name']
+
+class Contact(models.Model):
+    name = models.CharField(max_length=30, verbose_name='Имя')
+    last_name = models.CharField(max_length=30, verbose_name='Фамилия')
+    email = models.CharField(max_length=50, verbose_name='E-mail')
+    git = models.CharField(max_length=150, verbose_name='GitHub')
+
+    def __str__(self):
+        return f'{self.name} {self.last_name} {self.email} {self.git}'
+
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
+        ordering = ['name']
+
+
