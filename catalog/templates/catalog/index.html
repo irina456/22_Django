@@ -1,0 +1,47 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+
+    <br>
+    <h1>Главная</h1>
+    <text style="color:gray">Вы находитесь на сайте, предназначенном для продажи товаров</text>
+    <!--cards-->
+    <div class="row row-cols-1 row-cols-md-3 g-4" style="margin: 30px 150px">
+        {% for product in products_list %}
+        <div class="col">
+            <div class="card" style="min-height: 450px; padding-bottom: 10px">
+                <h5 class="card-header">{{ product.name }}</h5>
+                <div class="card-body">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}/media/images/noimage.png{% endif %}" style="max-width: 150px; max-height: 100px; border-radius: 10px" alt="Фото товара">
+                    <h2 class="card-title">{{ product.price }}</h2>
+                    <p class="card-text" align="justify">{{ product.description|truncatechars:100|default:"Описание отсутствует" }}</p>
+
+                </div>
+                <div>
+                    <a href="{% url 'catalog:product_details' product.pk %}" class="btn btn-outline-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="/new_product" class="btn btn-success">Добавить товар</a>
+    <div style="width: 100vh">
+        <div class="row">
+            <div class="col">
+                {% if page_obj.paginator.num_pages > 1 %}
+                <nav aria-label="...">
+                    <ul class="pagination pagination-lg">
+                        {% for page in page_obj.paginator.page_range %}
+                        <li class="page-item" >
+                            <a class="{% if page_obj.number == page %}active{% endif %} page-link" href="?page={{ page }}">{{ page }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

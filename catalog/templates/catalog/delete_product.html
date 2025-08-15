@@ -1,0 +1,20 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Удаление товара{% endblock %}
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    <h3>Вы действительно хотите удалить этот товар?</h3>
+    <form method="post">
+        {% csrf_token%}
+        <div class="d-grid gap-2 d-md-block">
+            <button class="btn btn-primary" type="submit">Удалить</button>
+            <a href="{% url 'catalog:index' %}" class="btn btn-primary" type="button">Отмена</a>
+        </div>
+    </form>
+    <img height="250px" src="{% if product.image %}{{ product.image.url }}{% else %}/media/images/noimage.png{% endif %}" alt="No image">
+    <br>
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.price }}</p>
+    <p>{{ product.description }}</p>
+    <p>{{ product.category }}</p>
+</div>
+{% endblock %}

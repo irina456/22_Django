@@ -1,0 +1,55 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Блог{% endblock %}
+{% block content %}
+<div class="container" style="min-height: 100vh; padding-top: 50px">
+    <a href="{% url 'blogs:new_post' %}" class="btn btn-outline-primary">Новый пост</a>
+    {% for post in posts %}
+    <div class="card" style="margin-top: 50px; margin-bottom: 50px">
+        <img src="{% if post.preview %}{{ post.preview.url }}{% else %}/media/images/noimage.png{% endif %}" style="max-height: 300px;" class="aspect-cropped" alt="No image">
+        <style>
+            .aspect-cropped {
+                height: 250px;
+                object-fit: cover;
+                border-radius: 5px 5px 0 0;
+            }
+        </style>
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.content|truncatechars:100|default:"Текст отсутствует" }}</p>
+            <p class="card-text">
+                <small class="text-body-secondary">{{ post.created_at }}</small>
+                <small class="text-body-secondary">Просмотры: {{ post.views }}</small>
+            </p>
+            <a href="{% url 'blogs:post' post.pk %}" type="button" class="btn btn-primary">Подробнее</a>
+            {% if user.is_authenticated %}
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <a href="{% url 'blogs:post_edit' post.pk %}"  type="button" class="btn btn-outline-primary">Редактировать</a>
+                <a href="{% url 'blogs:post_delete' post.pk %}" type="button" class="btn btn-outline-danger">Удалить</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    <div style="width: 100%">
+    <div class="row">
+        <div class="col">
+            {% if page_obj.paginator.num_pages > 1 %}
+            <nav aria-label="...">
+                <ul class="pagination pagination-lg">
+                    {% for page in page_obj.paginator.page_range %}
+                    <li class="page-item" >
+                        <a class="{% if page_obj.number == page %}active{% endif %} page-link" href="?page={{ page }}">{{ page }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+{% endblock %}

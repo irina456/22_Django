@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+{% block title %}{{user.username}}{% endblock %}
+{% block content %}
+<div class="container text-center" style="margin-top: 20px;">
+    <div class="row align-items-start">
+        <div class="col" style="max-width: 200px">
+            <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/media/images/noimage.png{% endif %}" style="max-height: 350px; max-width: 200px">
+            <br>
+            <br>
+            <a href="{% url 'users:profile_edit' user.pk %}" type="button" class="btn btn-outline-primary">Изменить</a>
+        </div>
+        <div class="col" align="left" style="margin-left: 20px;">
+            <h1>{{ user.username }}</h1>
+            <hr>
+            <font style="font-size: 15pt; font-family: Segoe UI;">
+            <p>Email: {{ user.email }}</p>
+            <p>Страна: {{ user.country }}</p>
+            <p>Номер телефона: {{ user.phone_number }}</p>
+            </font>
+        </div>
+    </div>
+</div>
+{% endblock %}
