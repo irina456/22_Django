@@ -18,8 +18,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from catalog import views
+
+handler404 = views.Custom404View.as_view()
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('catalog.urls', namespace='catalog')),
     path('blogs/', include('blog.urls', namespace='blogs')),
+    path('users/', include('users.urls', namespace='users')),
 ]

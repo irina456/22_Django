@@ -7,8 +7,10 @@
 <p>{{ post.content }}</p>
 <p>{{ post.created_at }}</p>
 <p>Просмотры: {{ post.views }}</p>
+{% if user.is_authenticated %}
 <div class="btn-group" role="group" aria-label="Basic outlined example">
     <a href="{% url 'blogs:post_edit' post.pk %}"  type="button" class="btn btn-outline-primary">Редактировать</a>
     <a href="{% url 'blogs:post_delete' post.pk %}" type="button" class="btn btn-outline-danger">Удалить</a>
 </div>
+{% endif %}
 {% endblock %}

@@ -13,7 +13,7 @@
 <div class="container" style="background-color: white">
   <div class="row">
     <!--left column-->
-    <div class="col-1" style="width:15%; min-height:100vh; background-color: #212f3c; padding-left: 20px;">
+    <div class="col-1" style="width:10%; min-height:100vh; background-color: #212f3c; position: fixed; transfom: none">
       <!--header-->
       {% block header %}
       <div class="row" style="align-items: center;">
@@ -32,32 +32,42 @@
       <!--/menu-->
       <!--profile-->
       {% block profile %}
-      <div class="dropup-center dropup" style="position: absolute; bottom: 15px;">
+      <div class="dropup-center dropup" align="center" style="min-width: 155px;">
         <hr style="color:white;">
-        <button class="btn btn-outline-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://arty525.github.io/img/avatar.jpg" width="35" style="border-radius: 100%">
-          Пользователь
+        {% if user.is_authenticated %}
+        <button class="btn btn-outline-light" style="width: 160px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}/media/images/noimage.png{% endif %}" width="35" height="35" style="border-radius: 100%" class="aspect-cropped">
+          <style>
+            .aspect-cropped {
+              height: 35px;
+              object-fit: cover;
+              border-radius: 5px 5px 0 0;
+            }
+          </style>
+          {{ user.username }}
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Профиль</a></li>
-          <li><a class="dropdown-item" href="#">Выход</a></li>
+          <li><a class="dropdown-item" href="{% url 'users:profile' user.pk %}">Профиль</a></li>
+          <form method="post" action="{% url 'users:logout' %}">
+            {% csrf_token %}
+            <li><button class="dropdown-item" type="submit" >Выход</button></li>
+          </form>
         </ul>
+        {% else %}
+        <a class="btn btn-primary" href="{% url 'users:login' %}" role="button">Войти</a>
+        {% endif %}
       </div>
       {% endblock %}
       <!--/profile-->
     </div>
     <!--/left column-->
     <!--right column-->
-    <div class="col" style="width:85%; min-height: 100vh;" align="center">
+    <div class="col" style="min-height: 100vh; position: relative; margin-left: 15%" align="center">
       {% block content %}
       {% endblock %}
       {% block footer %}
-      <div style="position: absolute; bottom: 15px; right: 15px;">
-        <!--copyright-->
-
+      <div style="position: absolute; bottom: 15px; right: 25px">
         <font color="gray">Create by <a href="https://github.com/Arty525" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" target="blank">Andrey Egorov</a></font>
-
-        <!--/copyright-->
       </div>
       {% endblock %}
     </div>

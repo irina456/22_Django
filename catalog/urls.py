@@ -8,6 +8,8 @@ from .views import CategoriesTemplateView, ContactListView, ProductListView, Pro
 
 app_name = 'catalog'
 
+handler404 = views.Custom404View.as_view()
+
 urlpatterns = [
     path('', ProductListView.as_view(), name='index'),
     path('contact/', ContactListView.as_view(), name='contact'),

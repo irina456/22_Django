@@ -1,14 +1,18 @@
 {% extends 'catalog/base.html' %}
 {% block title %}{{ product.name }}{% endblock %}
 {% block content %}
-<img height="250px" src="{% if product.image %}{{ product.image.url }}{% else %}/media/images/noimage.png{% endif %}" alt="Фото товара">
-<br>
-<h1>{{ product.name }}</h1>
-<h3> Категория: {{ product.category }}</h3>
-<h3>{{ product.price }}</h3>
-<p>{{ product.description }}</p>
-<div class="btn-group" role="group" aria-label="Basic outlined example">
-    <a href="{% url 'catalog:edit_product' product.pk %}"  type="button" class="btn btn-outline-primary">Редактировать</a>
-    <a href="{% url 'catalog:delete_product' product.pk %}" type="button" class="btn btn-outline-danger">Удалить</a>
+<div style="padding-top: 20px">
+    <h1>{{ product.name }}</h1>
+    <img height="250px" src="{% if product.image %}{{ product.image.url }}{% else %}/media/images/noimage.png{% endif %}" alt="Фото товара" style="border-radius: 10px;">
+    <br>
+    <h3> Категория: {{ product.category }}</h3>
+    <h3>Цена: {{ product.price }}</h3>
+    <p align="justify" style="font-family: Segoe UI; font-size: 14pt">{{ product.description }}</p>
+    {% if user.is_authenticated %}
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <a href="{% url 'catalog:edit_product' product.pk %}"  type="button" class="btn btn-outline-primary">Редактировать</a>
+        <a href="{% url 'catalog:delete_product' product.pk %}" type="button" class="btn btn-outline-danger">Удалить</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
